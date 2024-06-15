@@ -1,0 +1,23 @@
+services:
+  springboot-app:
+    image: marsapplication
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - elasticsearch
+    environment:
+      SPRING_ELASTICSEARCH_URIS: http://elasticsearch:9200
+
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.1
+    container_name: elasticsearch
+    environment:
+      - 'discovery.type=single-node'
+      - 'xpack.security.enabled=false'
+    ports:
+      - '9200:9200'
+      - '9300:9300'
